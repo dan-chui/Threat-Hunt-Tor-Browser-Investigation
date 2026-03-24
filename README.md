@@ -138,7 +138,7 @@ Port **9001** is commonly associated with Tor relay communications.
 
 Additional encrypted connections over **port 443** were also observed.
 
-![DeviceNetworkEvents Table Search](images/4_Searched_the__DeviceNetworkEvents_Table_for_TOR_Network_Connections.png)
+![DeviceNetworkEvents Table Search](images/4_Searched_the_DeviceNetworkEvents_Table_for_TOR_Network_Connections.png)
 
 ---
 
