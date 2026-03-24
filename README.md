@@ -16,6 +16,18 @@
 
 ---
 
+⚠️ Educational / Defensive Security Disclaimer
+
+This repository contains cybersecurity learning exercises and defensive
+security analysis. The materials document investigations, threat hunting,
+or incident response scenarios for educational and portfolio purposes.
+
+No malware, exploits, or offensive tooling are distributed in this repository.
+Any IP addresses, indicators, or artifacts are included strictly for analysis
+and educational demonstration.
+
+---
+
 ## Overview
 
 During a proactive threat hunting exercise, suspicious activity involving the **Tor Browser** was identified on endpoint **vm-hunt-tyo** associated with the user account **dan**.
