@@ -162,7 +162,7 @@ tor-shopping-list.txt
 
 This file was created on the Desktop and may contain information related to Tor browsing activity.
 
-![File artifact](images/5_TOR_Shopping_List_file.png)
+![File artifact](images/1_Searched_the_DeviceFileEvents_Table.png)
 
 ---
 
