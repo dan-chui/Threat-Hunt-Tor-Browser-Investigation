@@ -1,4 +1,4 @@
-# Threat Hunting Investigation: Tor Browser Installation and Usage
+# SOC Threat Hunting & Incident Investigation: Tor Browser Activity
 
 **Analyst:** Dan Chui  
 **Date:** March 10, 2026  
@@ -32,11 +32,37 @@ and educational demonstration.
 
 ## Overview
 
-During a proactive threat hunting exercise, suspicious activity involving the **Tor Browser** was identified on endpoint **vm-hunt-tyo** associated with the user account **dan**.
+During a proactive threat hunting exercise, suspicious Tor Browser activity was identified on endpoint **vm-hunt-tyo** associated with user **dan**.
 
-Analysis of Microsoft Defender XDR logs revealed that the user downloaded and executed the **Tor Browser portable installer**, extracted the browser to the Desktop, launched the application, and successfully established connections to the Tor network.
+Analysis of Microsoft Defender XDR telemetry confirmed download, execution, browser launch, and outbound communication consistent with Tor relay usage. The activity was assessed as non-malicious but a likely policy violation and was escalated for review.
 
-This investigation demonstrates how endpoint telemetry can be used to identify anonymization tools, reconstruct attacker/user activity, and detect potential policy violations.
+---
+
+## Incident Summary (SOC Ticket)
+
+| Field | Value |
+|------|------|
+| Ticket ID | INC-2026-0310-TOR |
+| Detection Source | Microsoft Defender XDR |
+| Alert Type | Suspicious Application (Tor Browser) |
+| Severity | Medium |
+| Status | Escalated |
+| Analyst | Dan Chui |
+| Device | vm-hunt-tyo |
+| User | dan |
+
+### Initial Assessment
+Detection of Tor Browser installation and outbound connections to known Tor relay infrastructure. Activity may indicate policy violation or anonymized external communication.
+
+### Actions Taken
+- Investigated file download and execution events
+- Correlated process and network telemetry
+- Confirmed Tor execution and relay communication
+- Assessed impact and potential risk
+- Escalated for further review
+
+### Disposition
+Activity assessed as non-malicious but potentially policy-violating. Escalated to the security team for validation and containment decision.
 
 ---
 
@@ -60,6 +86,29 @@ The investigation used the following Microsoft Defender Advanced Hunting tables:
 | DeviceFileEvents | Identify Tor downloads and file creation |
 | DeviceProcessEvents | Detect installer execution and Tor processes |
 | DeviceNetworkEvents | Detect Tor network communications |
+
+---
+
+## Alert Triage
+
+Upon detection, the alert was triaged to determine legitimacy and severity.
+
+### Key Questions
+- Is the activity authorized?
+- Is there evidence of malicious intent?
+- Does the activity indicate data exfiltration or lateral movement?
+
+### Findings
+- Application identified as Tor Browser (anonymization tool)
+- No evidence of privilege escalation or persistence
+- Network connections aligned with Tor relay behavior
+- Activity considered suspicious but not inherently malicious
+
+### Severity Rationale
+Assigned **Medium severity** due to:
+- Use of anonymization tools
+- Potential policy violation
+- External encrypted communication
 
 ---
 
@@ -162,7 +211,7 @@ File created:
 tor-shopping-list.txt
 ```
 
-This file was created on the Desktop and may contain information related to Tor browsing activity.
+This file was created on the Desktop after Tor activity was observed and may represent a user-created artifact associated with the session.
 
 ![File artifact](images/1_Searched_the_DeviceFileEvents_Table.png)
 
@@ -222,14 +271,30 @@ DeviceNetworkEvents
 
 ## Security Assessment
 
-The investigation confirmed that:
+The investigation confirmed successful download, execution, and use of Tor Browser, including outbound communication to Tor-related infrastructure.
 
-- Tor Browser was downloaded
-- The installer was executed
-- The browser was successfully launched
-- The endpoint connected to the Tor network
+No evidence of privilege escalation, persistence, or malware execution was observed during the review window. However, the use of anonymization software in an enterprise environment may represent a policy violation and warrants review.
 
-While Tor is not inherently malicious, its use within enterprise environments may violate organizational security policies and should be monitored.
+---
+
+## Escalation Decision
+
+The activity was escalated based on the following criteria:
+
+- Use of anonymization software within enterprise environment
+- External network communication to Tor relay nodes
+- Potential violation of acceptable use policy
+
+### Analyst Notes
+No evidence of lateral movement or follow-on malicious activity was identified during the observed timeframe; escalation was based on policy and visibility risk rather than confirmed compromise.
+
+### Escalation Path
+Tier 1 Analyst → Tier 2 / Security Team
+
+### Recommended Actions
+- Validate user intent
+- Confirm policy enforcement requirements
+- Consider endpoint isolation if unauthorized use is confirmed
 
 ---
 
@@ -264,7 +329,7 @@ Consider blocking outbound connections to common Tor relay ports:
 
 ## Conclusion
 
-This investigation demonstrates how endpoint telemetry can be used to identify the installation and use of anonymization tools such as Tor.
+This investigation demonstrates a structured SOC workflow including alert triage, investigation, severity assessment, and escalation based on endpoint telemetry.
 
 The activity shows a clear sequence:
 
@@ -275,14 +340,6 @@ The activity shows a clear sequence:
 5. User artifact created
 
 Threat hunting techniques such as these help security teams detect potential policy violations and improve defensive monitoring.
-
----
-
-## Deliverables 📄
-
-👉 An Executive Summary Report can be downloaded via my cybersecurity blog, [Happy Bytes](https://happy-bytes.vercel.app/blogs/threat_hunt_tor) 
-
-- Viewable on GitHub: [Tor Threat Hunting Summary Report (PDF)](report/Tor_Threat_Hunting_Summary_Report.pdf)
 
 ---
 
